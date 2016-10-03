@@ -10,7 +10,6 @@ class App extends Component {
         this.state = {
             data: []
         };
-        this.id = 0;
         this.todoClient = new TodoClient();
     }
 
