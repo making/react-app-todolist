@@ -4,7 +4,7 @@ const Title = ({todoCount}) => {
     return (
         <div>
             <div>
-                <h1>Todo List ({todoCount})</h1>
+                <h2>Todo List ({todoCount})</h2>
             </div>
         </div>
     );

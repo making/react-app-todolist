@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Grid, Row} from 'react-bootstrap';
+import {Grid, Navbar, Jumbotron, Row} from 'react-bootstrap';
 import TodoForm from './todo/TodoForm';
 import TodoList from './todo/TodoList';
 import Title from './todo/Title';
@@ -47,18 +47,31 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <Grid>
-                    <Row>
-                        <Title todoCount={this.state.data.length}/>
-                    </Row>
-                    <Row>
-                        <TodoForm addTodo={this.addTodo.bind(this)}/>
-                    </Row>
-                    <hr />
-                    <Row>
-                        <TodoList todos={this.state.data} remove={this.handleRemove.bind(this)}/>
-                    </Row>
-                </Grid>
+                <Navbar inverse fixedTop>
+                    <Grid>
+                        <Navbar.Header>
+                            <Navbar.Brand>
+                                <a href="/">ReactJS Sample</a>
+                            </Navbar.Brand>
+                            <Navbar.Toggle />
+                        </Navbar.Header>
+                    </Grid>
+                </Navbar>
+
+                <Jumbotron>
+                    <Grid>
+                        <Row>
+                            <Title todoCount={this.state.data.length}/>
+                        </Row>
+                        <Row>
+                            <TodoForm addTodo={this.addTodo.bind(this)}/>
+                        </Row>
+                        <hr />
+                        <Row>
+                            <TodoList todos={this.state.data} remove={this.handleRemove.bind(this)}/>
+                        </Row>
+                    </Grid>
+                </Jumbotron>
             </div>
         );
     }
