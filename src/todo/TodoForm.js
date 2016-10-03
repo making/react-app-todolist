@@ -1,41 +1,55 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import {Col, FormControl, Button, Glyphicon} from 'react-bootstrap';
+import {Col, Form, FormGroup, FormControl, Button, Glyphicon} from 'react-bootstrap';
 
 class TodoForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: false
+            isLoading: false,
+            validationState: ''
         };
         this.input = null;
         this.addTodo = props.addTodo;
     }
 
+    handleSubmit(e) {
+        e.preventDefault();
+        let dom = ReactDOM.findDOMNode(this.input);
+        if (dom.value) {
+            this.setState({
+                isLoading: true,
+                validationState: ''
+            });
+            this.addTodo(dom.value)
+                .then((res) => {
+                    this.setState({
+                        isLoading: false,
+                        validationState: ''
+                    });
+                    dom.value = '';
+                });
+        } else {
+            this.setState({validationState: 'error'});
+        }
+    }
+
     render() {
         return (
-            <div>
-                <Col xs={3}>
-                    <FormControl ref={node => {
-                        this.input = node;
-                    }}/>
+            <Form inline onSubmit={this.handleSubmit.bind(this)}>
+                <Col>
+                    <FormGroup validationState={this.state.validationState}>
+                        <FormControl ref={node => {
+                            this.input = node;
+                        }}/>
+                        <Button bsStyle="primary"
+                                disabled={this.state.isLoading}
+                                onClick={this.handleSubmit.bind(this)}>
+                            <Glyphicon glyph="plus"/>
+                        </Button>
+                    </FormGroup>
                 </Col>
-                <Col xs={1}>
-                    <Button bsStyle="primary"
-                            disabled={this.state.isLoading}
-                            onClick={() => {
-                                let dom = ReactDOM.findDOMNode(this.input);
-                                this.setState({isLoading: true});
-                                this.addTodo(dom.value)
-                                    .then((res) => {
-                                        this.setState({isLoading: false});
-                                        dom.value = '';
-                                    });
-                            }}>
-                        <Glyphicon glyph="plus"/>
-                    </Button>
-                </Col>
-            </div>
+            </Form>
         );
     }
 }
