@@ -7,7 +7,7 @@ class TodoForm extends Component {
         super(props);
         this.state = {
             isLoading: false,
-            validationState: ''
+            validationState: null
         };
         this.input = null;
         this.addTodo = props.addTodo;
@@ -19,18 +19,21 @@ class TodoForm extends Component {
         if (dom.value) {
             this.setState({
                 isLoading: true,
-                validationState: ''
+                validationState: null
             });
             this.addTodo(dom.value)
                 .then((res) => {
                     this.setState({
                         isLoading: false,
-                        validationState: ''
+                        validationState: null
                     });
                     dom.value = '';
                 });
         } else {
-            this.setState({validationState: 'error'});
+            this.setState({
+                isLoading: false,
+                validationState: 'error'
+            });
         }
     }
 
