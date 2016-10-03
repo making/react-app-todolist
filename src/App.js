@@ -46,7 +46,7 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <Title/>
+                <Title todoCount={this.state.data.length}/>
                 <TodoForm addTodo={this.addTodo.bind(this)}/>
                 <TodoList todos={this.state.data} remove={this.handleRemove.bind(this)}/>
             </div>
