@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Grid, Row} from 'react-bootstrap';
 import TodoForm from './todo/TodoForm';
 import TodoList from './todo/TodoList';
 import Title from './todo/Title';
@@ -15,7 +16,7 @@ class App extends Component {
 
     addTodo(val) {
         const todo = {text: val};
-        this.todoClient.postTodos(todo)
+        return this.todoClient.postTodos(todo)
             .then((res) => {
                 this.state.data.push(res.data);
                 this.setState({data: this.state.data});
@@ -46,9 +47,18 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <Title todoCount={this.state.data.length}/>
-                <TodoForm addTodo={this.addTodo.bind(this)}/>
-                <TodoList todos={this.state.data} remove={this.handleRemove.bind(this)}/>
+                <Grid>
+                    <Row>
+                        <Title todoCount={this.state.data.length}/>
+                    </Row>
+                    <Row>
+                        <TodoForm addTodo={this.addTodo.bind(this)}/>
+                    </Row>
+                    <hr />
+                    <Row>
+                        <TodoList todos={this.state.data} remove={this.handleRemove.bind(this)}/>
+                    </Row>
+                </Grid>
             </div>
         );
     }
