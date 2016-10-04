@@ -1,61 +1,77 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import {Col, Form, FormGroup, FormControl, Button, Glyphicon} from 'react-bootstrap';
+import React, {Component} from "react";
+import ReactDOM from "react-dom";
+import {Col} from "pui-react-grids";
+import {Input} from "pui-react-inputs";
+import {HighlightButton} from "pui-react-buttons";
+import {Icon} from "pui-react-iconography";
 
 class TodoForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isLoading: false,
-            validationState: null
+            validationState: null,
+            todo: ''
         };
-        this.input = null;
         this.addTodo = props.addTodo;
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        let dom = ReactDOM.findDOMNode(this.input);
-        if (dom.value) {
+    handleTodoChange(event) {
+        this.setState({
+            todo: event.target.value
+        });
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        let todo = this.state.todo;
+        if (todo) {
             this.setState({
-                isLoading: true,
-                validationState: null
+                isLoading: true
             });
-            this.addTodo(dom.value)
+            this.addTodo(todo)
                 .then((res) => {
                     this.setState({
                         isLoading: false,
-                        validationState: null
+                        todo: ''
                     });
-                    dom.value = '';
+                    this.focus();
                 });
         } else {
             this.setState({
-                isLoading: false,
                 validationState: 'error'
             });
         }
     }
 
+    focus() {
+        // ugly
+        ReactDOM.findDOMNode(this.refs.todo).querySelector("input").focus();
+    }
+
     render() {
         return (
-            <Form inline onSubmit={this.handleSubmit.bind(this)}>
-                <Col>
-                    <FormGroup validationState={this.state.validationState}>
-                        <FormControl ref={node => {
-                            this.input = node;
-                        }}/>
-                        <Button bsStyle="primary"
-                                disabled={this.state.isLoading}
-                                onClick={this.handleSubmit.bind(this)}>
-                            <Glyphicon glyph="plus"/>
-                        </Button>
-                    </FormGroup>
+            <form role="form" onSubmit={this.handleSubmit.bind(this)}>
+                <Col sm={10}>
+                    <Input label=""
+                           id="todo"
+                           ref="todo"
+                           displayError={this.state.validationState === 'error'}
+                           errorMessage="Please enter your todo."
+                           value={this.state.todo}
+                           onChange={this.handleTodoChange.bind(this)}
+                           disabled={this.state.isLoading}
+                           autoFocus={true}/>
                 </Col>
-            </Form>
+                <Col sm={2}>
+                    <HighlightButton
+                        disabled={this.state.isLoading}>
+                        <Icon name="plus" size="lg"/>
+                    </HighlightButton>
+                </Col>
+            </form>
         );
     }
 }
-;
 
 export default TodoForm;

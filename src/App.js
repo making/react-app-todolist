@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {Grid, Navbar, Jumbotron, Row} from 'react-bootstrap';
-import TodoForm from './todo/TodoForm';
-import TodoList from './todo/TodoList';
-import Title from './todo/Title';
-import TodoClient from './todo/TodoClient';
+import React, {Component} from "react";
+import {Row} from "pui-react-grids";
+import TodoForm from "./todo/TodoForm";
+import TodoList from "./todo/TodoList";
+import Title from "./todo/Title";
+import TodoClient from "./todo/TodoClient";
 
 class App extends Component {
     constructor(props) {
@@ -46,32 +46,17 @@ class App extends Component {
 
     render() {
         return (
-            <div className="App">
-                <Navbar inverse fixedTop>
-                    <Grid>
-                        <Navbar.Header>
-                            <Navbar.Brand>
-                                <a href="/">ReactJS Sample</a>
-                            </Navbar.Brand>
-                            <Navbar.Toggle />
-                        </Navbar.Header>
-                    </Grid>
-                </Navbar>
-
-                <Jumbotron>
-                    <Grid>
-                        <Row>
-                            <Title todoCount={this.state.data.length}/>
-                        </Row>
-                        <Row>
-                            <TodoForm addTodo={this.addTodo.bind(this)}/>
-                        </Row>
-                        <hr />
-                        <Row>
-                            <TodoList todos={this.state.data} remove={this.handleRemove.bind(this)}/>
-                        </Row>
-                    </Grid>
-                </Jumbotron>
+            <div className="container">
+                <Row>
+                    <Title todoCount={this.state.data.length}/>
+                </Row>
+                <Row>
+                    <TodoForm addTodo={this.addTodo.bind(this)}/>
+                </Row>
+                <hr />
+                <Row>
+                    <TodoList todos={this.state.data} remove={this.handleRemove.bind(this)}/>
+                </Row>
             </div>
         );
     }
