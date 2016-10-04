@@ -1,40 +1,49 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import ReactDOM from 'react-dom';
-import {Col, Form, FormGroup, FormControl, Button, Glyphicon} from 'react-bootstrap';
+import {Col, Form, FormGroup, FormControl, Button, Glyphicon} from "react-bootstrap";
 
 class TodoForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isLoading: false,
-            validationState: null
+            validationState: null,
+            todo: ''
         };
-        this.input = null;
         this.addTodo = props.addTodo;
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        let dom = ReactDOM.findDOMNode(this.input);
-        if (dom.value) {
+    handleTodoChange(event) {
+        this.setState({
+            todo: event.target.value
+        });
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        let todo = this.state.todo;
+        if (todo) {
             this.setState({
                 isLoading: true,
                 validationState: null
             });
-            this.addTodo(dom.value)
+            this.addTodo(todo)
                 .then((res) => {
                     this.setState({
                         isLoading: false,
-                        validationState: null
+                        todo: ''
                     });
-                    dom.value = '';
+                    this.focus();
                 });
         } else {
             this.setState({
-                isLoading: false,
                 validationState: 'error'
             });
         }
+    }
+
+    focus() {
+        ReactDOM.findDOMNode(this.refs.todo).focus();
     }
 
     render() {
@@ -42,9 +51,11 @@ class TodoForm extends Component {
             <Form inline onSubmit={this.handleSubmit.bind(this)}>
                 <Col>
                     <FormGroup validationState={this.state.validationState}>
-                        <FormControl ref={node => {
-                            this.input = node;
-                        }}/>
+                        <FormControl ref="todo"
+                                     value={this.state.todo}
+                                     onChange={this.handleTodoChange.bind(this)}
+                                     disabled={this.state.isLoading}
+                                     autoFocus={true}/>
                         <Button bsStyle="primary"
                                 disabled={this.state.isLoading}
                                 onClick={this.handleSubmit.bind(this)}>
